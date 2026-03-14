@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panth Analytics Pro</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --accent: #00ff88;
+            --bg: #05070a;
+            --surface: #11141b;
+            --text-main: #ffffff;
+            --text-dim: #8b949e;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .wrapper {
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        /* HEADER */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 15px;
+        }
+
+        header h1 { font-size: 1.2rem; letter-spacing: 2px; color: var(--accent); margin: 0; }
+        .status-tag { font-size: 0.7rem; background: #161b22; padding: 5px 12px; border-radius: 20px; border: 1px solid var(--accent); color: var(--accent); }
+
+        /* STAT CARDS */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: var(--surface);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .card label { color: var(--text-dim); font-size: 0.75rem; text-transform: uppercase; display: block; margin-bottom: 8px; }
+        .card span { font-size: 1.8rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+        .card small { font-size: 0.9rem; margin-left: 4px; color: var(--text-dim); }
+
+        /* CHART AREA */
+        .main-view {
+            background: var(--surface);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            height: 400px;
+        }
+
+        /* INPUT AREA */
+        .input-box {
+            background: var(--surface);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px dashed #30363d;
+        }
+
+        textarea {
+            width: 100%;
+            height: 60px;
+            background: transparent;
+            border: none;
+            color: var(--accent);
+            font-family: monospace;
+            resize: none;
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        button {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 6px;
+            font-weight: 800;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        button:hover { background: #00cc6e; transform: scale(1.01); }
+
+        @media (max-width: 768px) {
+            .stats-row { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <header>
+        <h1>PANTH ANALYTICS <small style="color:white; font-weight: 200;">V2.1</small></h1>
+        <div class="status-tag">READY FOR DATA</div>
+    </header>
+
+    <div class="stats-row">
+        <div class="card"><label>Max Temp</label><span id="max">--</span><small>°C</small></div>
+        <div class="card"><label>Min Temp</label><span id="min">--</span><small>°C</small></div>
+        <div class="card"><label>Average</label><span id="avg">--</span><small>°C</small></div>
+        <div class="card"><label>Samples</label><span id="cnt">--</span><small>min</small></div>
+    </div>
+
+    <div class="main-view">
+        <canvas id="chart"></canvas>
+    </div>
+
+    <div class="input-box">
+        <textarea id="rawInput" placeholder="Paste Arduino JSON output here..."></textarea>
+        <button onclick="render()">ANALYZE DATA</button>
+    </div>
+</div>
+
+<script>
+    let chartObj = null;
+
+    function render() {
+        const input = document.getElementById('rawInput').value;
+        try {
+            // Find JSON inside potential markers
+            const startMarker = "--- DATA START ---";
+            const endMarker = "--- DATA END ---";
+            let cleanJSON = input;
+            
+            if(input.includes(startMarker)) {
+                cleanJSON = input.split(startMarker)[1].split(endMarker)[0];
+            }
+
+            const parsed = JSON.parse(cleanJSON);
+            const data = parsed.data;
+
+            // Calculations
+            const maxVal = Math.max(...data);
+            const minVal = Math.min(...data);
+            const avgVal = (data.reduce((a, b) => a + b, 0) / data.length).toFixed(1);
+
+            // Update Cards
+            document.getElementById('max').innerText = maxVal;
+            document.getElementById('min').innerText = minVal;
+            document.getElementById('avg').innerText = avgVal;
+            document.getElementById('cnt').innerText = data.length;
+
+            // Chart Generation
+            const ctx = document.getElementById('chart').getContext('2d');
+            if (chartObj) chartObj.destroy();
+
+            chartObj = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map((_, i) => `${i+1}m`),
+                    datasets: [{
+                        label: 'Temperature',
+                        data: data,
+                        borderColor: '#00ff88',
+                        backgroundColor: (context) => {
+                            const chart = context.chart;
+                            const {ctx, canvas, chartArea} = chart;
+                            if (!chartArea) return null;
+                            const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                            gradient.addColorStop(0, 'rgba(0, 255, 136, 0.3)');
+                            gradient.addColorStop(1, 'rgba(0, 255, 136, 0)');
+                            return gradient;
+                        },
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 3,
+                        pointRadius: 5,
+                        pointBackgroundColor: '#00ff88',
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { color: '#8b949e' } },
+                        y: { 
+                            grid: { color: 'rgba(255,255,255,0.05)' }, 
+                            ticks: { color: '#8b949e' },
+                            beginAtZero: false 
+                        }
+                    }
+                }
+            });
+
+        } catch (err) {
+            alert("Invalid Format. Please paste the exact JSON from Arduino.");
+            console.error(err);
+        }
+    }
+</script>
+
+</body>
+</html>
