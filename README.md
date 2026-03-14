@@ -17,7 +17,7 @@ Copy the text below and paste it into a file named `README.md` in your GitHub re
 Built completely with non-blocking code (using `millis()` instead of `delay()`), it features a multi-view LCD interface, hardware debouncing, and a companion Glassmorphism HTML/JS dashboard.
 
 ---
-![IMG_3269](https://github.com/user-attachments/assets/22e5aea0-a828-42fb-bd61-77b5cb319d5f)
+![IMG_3268](https://github.com/user-attachments/assets/0968a3b7-a0e5-4299-876c-e0327c61e619)
 
 ## ✨ Key Features
 * **1-Hour Data Logging:** Stores temperature data every minute locally in RAM using a memory-efficient circular buffer.
