@@ -17,6 +17,7 @@ Copy the text below and paste it into a file named `README.md` in your GitHub re
 Built completely with non-blocking code (using `millis()` instead of `delay()`), it features a multi-view LCD interface, hardware debouncing, and a companion Glassmorphism HTML/JS dashboard.
 
 ---
+![IMG_3269](https://github.com/user-attachments/assets/22e5aea0-a828-42fb-bd61-77b5cb319d5f)
 
 ## ✨ Key Features
 * **1-Hour Data Logging:** Stores temperature data every minute locally in RAM using a memory-efficient circular buffer.
@@ -26,6 +27,7 @@ Built completely with non-blocking code (using `millis()` instead of `delay()`),
 * **Web Dashboard (`index.html`):** A beautiful, responsive web visualizer built with Chart.js to graph the exported Arduino data.
 
 ---
+![IMG_3270](https://github.com/user-attachments/assets/21e6ace4-1c14-4efd-9869-9c665057e4fa)
 
 ## 🛠️ Materials Required (BOM)
 To build this project, you will need the following hardware:
@@ -112,6 +114,11 @@ Boom! Beautiful, smooth charts with automatic Max/Min/Avg calculations. 📈
 **Built by Panth**  
 Open-source enthusiast, Maker, and Engineering Student.  
 *(Feel free to reach out or open an issue if you have suggestions!)*
+
+![IMG_3271](https://github.com/user-attachments/assets/97d98d26-43fa-4b53-afc6-c8995b8f18f8)
+![IMG_3273](https://github.com/user-attachments/assets/fc3cdc8c-5216-422c-9772-da15ccdaf118)
+![IMG_3274](https://github.com/user-attachments/assets/6ebc8c4f-09b6-433c-902d-0bdf4cf96bfb)
+![IMG_3268](https://github.com/user-attachments/assets/0968a3b7-a0e5-4299-876c-e0327c61e619)
 
 ## 📄 License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
