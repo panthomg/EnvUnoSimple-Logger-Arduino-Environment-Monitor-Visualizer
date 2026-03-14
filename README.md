@@ -119,6 +119,7 @@ Open-source enthusiast, Maker, and Engineering Student.
 ![IMG_3273](https://github.com/user-attachments/assets/fc3cdc8c-5216-422c-9772-da15ccdaf118)
 ![IMG_3274](https://github.com/user-attachments/assets/6ebc8c4f-09b6-433c-902d-0bdf4cf96bfb)
 ![IMG_3268](https://github.com/user-attachments/assets/0968a3b7-a0e5-4299-876c-e0327c61e619)
+![IMG_3269](https://github.com/user-attachments/assets/380fa8cf-c2ea-44a0-8db7-ecf4eb7d5538)
 
 ## 📄 License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
