@@ -1,8 +1,4 @@
-This is a highly professional, well-structured `README.md` file for your GitHub repository. 
-
-Since you are applying to German universities, having a well-documented open-source project on your GitHub profile is a **massive advantage**. It shows practical engineering skills, problem-solving, and a structured mindset. 
-
-Copy the text below and paste it into a file named `README.md` in your GitHub repository.
+Temperature and Humidity sensor
 
 ***
 
